@@ -1,68 +1,85 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Quản Lý Sách</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/styles.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hệ Thống Quản Lý Sách</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/styles.css') }}">
 </head>
 <body>
-    <header>
-        <h1 style="color: white;">Thư Viện Số</h1>
-        <div class="auth-buttons">
-            <!-- Gọi đến hàm login trong blueprint "taikhoan" -->
-            <a href="{{ url_for('taikhoan.Login') }}" class="btn login-btn">Đăng Nhập</a>
-            <a href="#" class="btn register-btn">Đăng Ký</a>
-        </div>
-    </header>
-
-    <div class="container">
-        <!-- Search Section -->
-        <section class="search-section">
-            <h2>Tìm Kiếm Sách</h2>
-            <form class="search-form">
-                <div class="form-group">
-                    <label>Tên sách:</label>
-                    <input type="text" placeholder="Nhập tên sách...">
-                </div>
-                <div class="form-group">
-                    <label>ID sách:</label>
-                    <input type="number" placeholder="Nhập ID sách...">
-                </div>
-                <button type="submit" class="btn login-btn">Tìm Kiếm</button>
-            </form>
-
-            <div class="action-buttons">
-                <button class="btn delete-btn">Xóa Theo ID</button>
-                <button class="btn delete-btn">Xóa Theo Tên</button>
-                <button class="btn update-btn">Cập Nhật Thông Tin</button>
-            </div>
-        </section>
-
-        <!-- Book Grid -->
-        <div class="book-grid">
-            <!-- Book Card 1 -->
-            <div class="book-card">
-                <img src="https://tiemsach.org/wp-content/uploads/2023/07/Ebook-Dac-nhan-tam.jpg" alt="Sách 1" class="book-image">
-                <div class="book-info">
-                    <h3 class="book-title">Lập Trình Python</h3>
-                    <p class="book-author">Tác giả: John Doe</p>
-                    <p class="book-id">ID: 001</p>
-                </div>
-            </div>
-
-            <!-- Book Card 2 -->
-            <div class="book-card">
-                <img src="https://lh5.googleusercontent.com/proxy/lHKozOr_yiOBTXp11IN7bLbutJpv8vVmpYtx2ry3WMVvIMB70IksYaNRuAzxCGY5SP00KeGz9da56yGnD8h0vACLsL7AUaoGMNQ8KvdkZR07wNruS73-9BtGnpB7JXkROmzvWzgTrhFfLZAk_fgyU7qHcrW0rqqDYmDIzMTMdrb6kePG0B_VqR0QFBiu" alt="Sách 2" class="book-image">
-                <div class="book-info">
-                    <h3 class="book-title">Thiết Kế Web</h3>
-                    <p class="book-author">Tác giả: Jane Smith</p>
-                    <p class="book-id">ID: 002</p>
-                </div>
-            </div>
-
-            <!-- Add more book cards as needed -->
-        </div>
+  <header>
+    <h1>Thư Viện Số</h1>
+    <div class="auth-buttons">
+      <a href="{{ url_for('taikhoan.Login') }}" class="btn register-btn">Đăng Nhập</a>
+      <a href="{{ url_for('taikhoan.signUp') }}" class="btn register-btn">Đăng Ký</a>
     </div>
+  </header>
+
+  <div class="container">
+    <!-- Search Section -->
+    <section class="search-section">
+      <h2>Tìm Kiếm Sách</h2>
+      <form class="search-form">
+        <div class="form-group">
+          <label for="searchBookName">Tên sách:</label>
+          <input type="text" id="searchBookName" placeholder="Nhập tên sách...">
+        </div>
+        <div class="form-group">
+          <label for="searchBookId">ID sách:</label>
+          <input type="number" id="searchBookId" placeholder="Nhập ID sách...">
+        </div>
+      </form>
+
+      <div class="action-buttons">
+        <button id="them_sach" class="btn add-btn">Thêm Sách</button>
+        <button id="searchByIdBtn" class="btn search-btn">Tìm Theo ID</button>
+        <button id="searchByNameBtn" class="btn search-btn">Tìm Theo Tên</button>
+        <button id="deleteByIdBtn" class="btn delete-btn">Xóa Theo ID</button>
+        <button id="deleteByNameBtn" class="btn delete-btn">Xóa Theo Tên</button>
+        <button id="updateBookBtn" class="btn update-btn">Cập Nhật</button>
+        <button id="viewAllBooksBtn" class="btn view-btn">Xem Tất Cả Sách</button>
+      </div>
+    </section>
+
+    <!-- Kết quả hiển thị -->
+    <div id="resultDiv"></div>
+    <div id="allBooksResult"></div>
+  </div>
+
+  <!-- Modal Thêm Sách -->
+  <div id="addModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Thêm Sách Mới</h3>
+      <!-- Nếu muốn thêm sách có id theo người dùng nhập, có thể bật input này -->
+      <input type="text" id="tenSach" placeholder="Tên sách">
+      <input type="number" id="soTrang" placeholder="Số trang">
+      <button id="confirmAdd">Thêm</button>
+    </div>
+  </div>
+
+  <!-- Modal Xóa Sách -->
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Xóa Sách</h3>
+      <input type="text" id="deleteValue" placeholder="Nhập ID hoặc Tên sách">
+      <button id="confirmDelete">Xác nhận</button>
+    </div>
+  </div>
+
+  <!-- Modal Cập Nhật Sách -->
+  <div id="updateModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Cập Nhật Sách</h3>
+      <input type="number" id="updateId" placeholder="ID sách">
+      <input type="text" id="newTen" placeholder="Tên mới">
+      <input type="number" id="newSoTrang" placeholder="Số trang mới">
+      <button id="confirmUpdate">Cập Nhật</button>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='JS/script.js') }}"></script>
 </body>
 </html>

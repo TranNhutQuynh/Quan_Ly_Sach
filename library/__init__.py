@@ -3,8 +3,7 @@ from .extension import db, ma
 import os
 from library.book.controller import book_bp
 from library.account.controller import account_bp
-from library.author.controller import author_bp
-from .models import Books,Author,Account
+from .models import Books,Account
 
 def create_db(app):
     with app.app_context():
@@ -15,6 +14,7 @@ def create_db(app):
 
 def create_app(config_file="config.py"):
     app=Flask(__name__)
+    app.config['SECRET_KEY'] = '1234'
     app.config.from_pyfile(config_file)
     #đăng ký cơ sở dữ liệu
     db.init_app(app)
@@ -25,6 +25,5 @@ def create_app(config_file="config.py"):
     #đăng ký blueprint
     app.register_blueprint(book_bp)
     app.register_blueprint(account_bp)
-    app.register_blueprint(author_bp)
     
     return app

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Đăng Nhập</title>
+  <link rel="stylesheet" href="{{url_for('static',filename='CSS/login_styles.css')}}">
+</head>
+<body>
+  <div class="login-container">
+    <h2>Đăng Ký</h2>
+    <form action="{{url_for('taikhoan.signUp')}}" method="post">
+      <input type="username" name="username" placeholder="Tên tài khoản" required>
+      <input type="password" name="password" placeholder="Mật khẩu" required>
+      <input type="confirm" placeholder="Xác Nhận mật khẩu" required>
+      <button type="submit">Đăng ký</button>
+    </form>
+  </div>
+</body>
+</html>

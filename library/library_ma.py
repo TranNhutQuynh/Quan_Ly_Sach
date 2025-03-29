@@ -14,8 +14,4 @@ class AccountSchema(ma.Schema):
 # các trường (fields) của đối tượng sách mà bạn muốn serialize/deserialize
 class BooksSchema(ma.Schema):
     class Meta:
-        fields=('id','ten','soTrang','idTacGia','tenTacGia')
-
-class AuthorSchema(ma.Schema):
-    class Meta:
-        fields=('id','ten')
+        fields=('id','ten','soTrang')
